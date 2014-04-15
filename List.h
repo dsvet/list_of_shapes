@@ -23,7 +23,7 @@ public:
 	void AddToTail(Shape*);
 	bool RemoveFirst(const Shape& c); // удалить первый узел, указывающий на фигуру c
 	size_t Remove(const Shape& c); // удалить все узлы, указывающие на фигуру c; возвращает количество удаленных узлов
-	void Clear(); // очистить список
+	void Clear(); // clear list
 	void SortBySquare(); // сортировать по возрастанию площади
 
 
