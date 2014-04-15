@@ -5,7 +5,7 @@
 Node::Node(Node* p, const Shape* s)
 {
 	m_Data = s->Clone();	
-	ConstructNode(p); // создание нужных связей между узлами
+	ConstructNode(p); // create necessary links between Nodes
 }
 
 
@@ -17,7 +17,7 @@ Node::~Node(void)
 
 void Node::RemoveNode()
 {
-	// исключение this
+	// remove this (change links)
 	if(pPrev)
 		pPrev->pNext=pNext;
 	if(pNext)
@@ -28,12 +28,12 @@ void Node::RemoveNode()
 Node::Node(Node* p, const Node* node)
 {
 	m_Data=node->m_Data->Clone();
-	ConstructNode(p); // создание нужных связей между узлами
+	ConstructNode(p); // create necessary links between Nodes
 }
 
 void Node::ConstructNode(Node* p)
 {
-	// добавление после p
+	// insert this-Node after Node <p>
 	pPrev=p;
 	pNext=p->pNext;
 	p->pNext=this;

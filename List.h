@@ -5,12 +5,12 @@ class List
 	size_t m_size;
 	Node Head,Tail;
 
-	bool IsGreater(const Node* fNode, const Node* sNode) const; // сравнение по площади двух фигур в узлах
-	Node* FindMinNode(Node* cur) const; // возвращает минимальный узел в списке, начиная с узла cur (включительно)
+	bool IsGreater(const Node* fNode, const Node* sNode) const; // compare squares of Shapes in the Nodes
+	Node* FindMinNode(Node* cur) const; // return minimal Node in the List beginning from Node <cur> inclusively
 	void Print(ostream&) const;
 	void Read(istream&);
 public:
-	List(void);	 // создание пустого списка (голова и хвост указывают друг на друга)
+	List(void);	 // create an empty List (Head and Tail point to each other)
 	List(const List&);
 	List(List&&);
 
@@ -21,10 +21,10 @@ public:
 
 	void AddToHead(Shape*);
 	void AddToTail(Shape*);
-	bool RemoveFirst(const Shape& c); // удалить первый узел, указывающий на фигуру c
-	size_t Remove(const Shape& c); // удалить все узлы, указывающие на фигуру c; возвращает количество удаленных узлов
-	void Clear(); // clear list
-	void SortBySquare(); // сортировать по возрастанию площади
+	bool RemoveFirst(const Shape& c); // remove the first Node pointed to Shape <c>
+	size_t Remove(const Shape& c); // remove all Nodes pointed to Shape <c>; return number of removed Nodes
+	void Clear(); // clear List
+	void SortBySquare(); // sort by ascending of square
 
 
 	friend ostream& operator<<(ostream&,const List&);

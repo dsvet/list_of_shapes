@@ -7,7 +7,7 @@ List::List(void)
 	m_size=0;
 	Head.pNext=&Tail;
 	Tail.pPrev=&Head;
-	// Для корректного вызова ~Node():
+	// For the sake of correct call of ~Node():
 	Head.m_Data=nullptr;
 	Tail.m_Data=nullptr;
 }
@@ -66,10 +66,10 @@ size_t List::Remove(const Shape& c)
 }
 
 void List::Clear()
-	// очистка списка
+	// clear List
 {
 	while(Head.pNext!=&Tail)
-		delete Head.pNext; // вызываем деструктор для узла
+		delete Head.pNext; // call destructor for current Node
 }
 
 void List::SortBySquare()
@@ -80,11 +80,11 @@ void List::SortBySquare()
 		Node* minNode=nullptr;
 		while(cur!=Tail.pPrev)
 		{
-			// считаем, что список отсортирован от Head до cur
-			minNode=FindMinNode(cur); //ищем минимальный узел в списке, начиная со след. после cur
-			// "Переносим" узел (удаляем и вставляем):
+			// assume that List is already sorted from <Head> to <cur>
+			minNode=FindMinNode(cur); // search for minimal Node in the List beginning from the next Node after <cur>
+			// "Move" Node (remove and insert):
 			minNode->RemoveNode();
-			minNode->ConstructNode(cur); // вставка minNode после текущего узла
+			minNode->ConstructNode(cur); // insertion of <minNode> after current Node
 
 			cur=cur->pNext;
 		}
@@ -98,7 +98,7 @@ bool List::IsGreater(const Node* fNode, const Node* sNode) const
 
 }
 
-Node* List::FindMinNode(Node* p) const // просматриваем список, начиная с узла p
+Node* List::FindMinNode(Node* p) const // looking through the List starting from the Node <p>
 {
 	Node* node=p->pNext;
 	p=p->pNext;
@@ -137,57 +137,57 @@ istream& operator>>(istream& i,List& l)
 
 void List::Read(istream& i)
 {
-	Node* node=&Head; // текущий узел в списке, в который читаем
-	int x,y,R,c,w,h; // параметры фигуры
-	char type; // тип фигуры (R/C)
-	char str[20]; // для хранения строки, прочитанной из файла
-	while(!i.eof()) // читаем пока не достигнут конец файла
+	Node* node=&Head; // current Node in the List into which we are reading
+	int x,y,R,c,w,h; // parameters of Shape
+	char type; // type of Shape (R/C)
+	char str[20]; // for storage of string read from a file
+	while(!i.eof()) // read while end of file is not reached
 	{
-		i.getline(str,_countof(str)); // читаем строку
-		if(str[0]=='\0') // если пустая строка (между узлами)
+		i.getline(str,_countof(str)); // read the string
+		if(str[0]=='\0') // if an empty string (between nodes)
 			continue;
-		// Читаем содержимое узла.		
-		// Общая часть для круга и прямоугольника:
-		sscanf_s(str,"%1c",&type); // читаем тип фигуры (R/C)
+		// Read content of Node.
+		// Common part for Circle and Rect:
+		sscanf_s(str,"%1c",&type); // read type of Shape (R/C)
 		i.getline(str,_countof(str));
-		sscanf_s(str,"%*10c %d", &c); // пропускаем "Colour is "
+		sscanf_s(str,"%*10c %d", &c); // skip "Colour is "
 		i.getline(str,_countof(str));
-		sscanf_s(str,"%*4c %d", &x); // пропускаем "x = "
+		sscanf_s(str,"%*4c %d", &x); // skip "x = "
 		i.getline(str,_countof(str));
-		sscanf_s(str,"%*4c %d", &y); // пропускаем "y = "
+		sscanf_s(str,"%*4c %d", &y); // skip "y = "
 		i.getline(str,_countof(str));
-		if(type=='C') // если читаем круг
+		if(type=='C') // if we are reading a Circle
 		{
-			sscanf_s(str,"%*9c %d", &R); // пропускаем "Radius = "
+			sscanf_s(str,"%*9c %d", &R); // skip "Radius = "
 			if(node->pNext!=&Tail)
 			{
-				if(Circle* pC=dynamic_cast<Circle*>(node->pNext->m_Data)) // если в узле был круг,
-					pC->ChangeData(x,y,R,static_cast<Color>(c)); // то достаточно поменять данные
-				else // dynamic_cast вернул 0
+				if(Circle* pC=dynamic_cast<Circle*>(node->pNext->m_Data)) // if Node contains a Circle,
+					pC->ChangeData(x,y,R,static_cast<Color>(c)); // than enough to change data
+				else // dynamic_cast returned 0
 				{
 					delete node->pNext->m_Data;
 					node->pNext->m_Data=new Circle(x,y,R,static_cast<Color>(c));
 				}
 			}
-			else // узлы в списке кончились
+			else // there is no more Nodes in the List
 				AddToTail(new Circle(x,y,R,static_cast<Color>(c)));
 		}
-		if(type=='R') // если читаем прямоугольник
+		if(type=='R') // if we are reading a Rect
 		{
-			sscanf_s(str,"%*8c %d", &w); // пропускаем "Width = "
+			sscanf_s(str,"%*8c %d", &w); // skip "Width = "
 			i.getline(str,_countof(str));
-			sscanf_s(str,"%*9c %d", &h); // пропускаем "Height = "
+			sscanf_s(str,"%*9c %d", &h); // skip "Height = "
 			if(node->pNext!=&Tail)
 			{
-				if(Rect* pC=dynamic_cast<Rect*>(node->pNext->m_Data)) // если в узле был прямоугольник,
-					pC->ChangeData(x,y,w,h,static_cast<Color>(c)); // то достаточно поменять данные
-				else // dynamic_cast вернул 0
+				if(Rect* pC=dynamic_cast<Rect*>(node->pNext->m_Data)) // if Node contains a Rect,
+					pC->ChangeData(x,y,w,h,static_cast<Color>(c)); // than enough to change data
+				else // dynamic_cast returned 0
 				{
 					delete node->pNext->m_Data;
 					node->pNext->m_Data=new Rect(x,y,w,h,static_cast<Color>(c));
 				}
 			}
-			else // узлы в списке кончились
+			else // there is no more Nodes in the List
 				AddToTail(new Rect(x,y,w,h,static_cast<Color>(c)));
 		}
 		node=node->pNext;
@@ -199,7 +199,7 @@ List::List(const List& l)
 	Head.pNext=&Tail;
 	Tail.pPrev=&Head;
 	m_size=0;
-	Head.m_Data=Tail.m_Data=nullptr; // для корректного вызова деструкторов встроенных Node
+	Head.m_Data=Tail.m_Data=nullptr; // for the sake of correct call of destructors for nested Nodes
 
 	*this=l;
 }
@@ -218,14 +218,14 @@ List& List::operator=(const List& l)
 
 		if(m_size!=0)
 		{
-			// Копируем "общую часть":
+			// Make a copy of "common part":
 			while(node->pNext!=&Tail && lNode->pNext!=&l.Tail)
 			{
 				try
 				{
-					*node->m_Data=*lNode->m_Data; // вызываем operator= класса типа *node->m_Data
+					*node->m_Data=*lNode->m_Data; // call 'operator=' for class of type '*node->m_Data'
 				}
-				catch(...) // присваивание невозможно (объекты разных типов - Circle & Rect)
+				catch(...) // assignment is impossible (objects have different types - Circle & Rect)
 				{
 					delete node->m_Data;
 					node->m_Data=lNode->m_Data->Clone();
@@ -234,7 +234,7 @@ List& List::operator=(const List& l)
 				lNode=lNode->pNext;
 			}
 		}
-		if(m_size<l.m_size) // если в l есть еще элементы, но в нашем списке не хватает места
+		if(m_size<l.m_size) // if <l> has more elements, but our List is already full
 		{
 			while(lNode!=&l.Tail)
 			{
@@ -242,7 +242,7 @@ List& List::operator=(const List& l)
 				lNode=lNode->pNext;
 			}
 		}
-		else // если дошли до конца l, то нужно удалить ненужные элементы в нашем списке
+		else // if we reach the end of <l> than it is necessary to delete useless elements in our List
 		{
 			node=node->pPrev;
 			while(node->pNext!=&Tail)
@@ -270,7 +270,7 @@ List& List::operator=(List&& l)
 		}
 		else
 		{
-			// направляем голову и хвост нового списка на голову и хвост старого 
+			// point Head and Tail of the new List to Head and Tail of the old one
 			Head.pNext=l.Head.pNext;
 			Head.pNext->pPrev=&Head;
 			Tail.pPrev=l.Tail.pPrev;
@@ -278,10 +278,10 @@ List& List::operator=(List&& l)
 			m_size=l.m_size;
 		}
 
-			// удаление старых связей
+			// deleting of old links
 			l.Head.pNext=&l.Tail;
 			l.Tail.pPrev=&l.Head;
-			l.m_size=0; // избыточно
+			l.m_size=0; // redundantly
 		
 	}
 

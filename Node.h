@@ -5,13 +5,13 @@ class Node
 	Node* pPrev, *pNext;
 	Shape* m_Data;
 	
-	Node(){pPrev=pNext=nullptr;} // используется в конструкторах List для инициализации Head и Tail
-	Node(Node* p, const Shape* s); // вставка узла с заданной фигурой после узла p
-	Node(Node* p, const Node* node); // вставка ранее созданного узла после узла p
-	~Node(void); // исключить this-узел, удалить ассоциированную с ним фигуру
+	Node(){pPrev=pNext=nullptr;} // used in constructors of List for initialization of Head and Tail
+	Node(Node* p, const Shape* s); // insertion of Node with <s> after Node <p>
+	Node(Node* p, const Node* node); // insertion of already created Node after Node <p>
+	~Node(void); // remove this-Node, delete associated Shape
 	
-	void RemoveNode(); // исключение this-узла из списка (удаление связей)
-	void ConstructNode(Node* p); // создание нужных связей между узлами
+	void RemoveNode(); // remove this-Node from the List (delete links)
+	void ConstructNode(Node* p); // create necessary links between Nodes
 
 	friend class List;
 };
