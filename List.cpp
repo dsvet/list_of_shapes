@@ -72,8 +72,20 @@ void List::Clear()
 		delete Head.pNext; // call destructor for current Node
 }
 
-void List::SortBySquare()
+void List::SelectionSort(SORT_ATTR t)
 {
+	switch(t)
+	{
+	case SQUARE:
+		m_pf=&List::HasGreaterSquare;
+		break;
+	case COLOR:
+		m_pf=&List::HasGreaterColor;
+		break;
+	case REMOTENESS:
+		m_pf=&List::IsMoreRemote;
+		break;
+	}
 	if(m_size>1)
 	{
 		Node* cur=&Head;
@@ -91,11 +103,19 @@ void List::SortBySquare()
 	}
 }
 
-bool List::IsGreater(const Node* fNode, const Node* sNode) const
+bool List::HasGreaterSquare(const Node* fNode, const Node* sNode) const
 {
-	double eps=0.0001;
-	return (fNode->m_Data->Square()-sNode->m_Data->Square()>eps);
+	return (fNode->m_Data->Square() - sNode->m_Data->Square()> DBL_EPSILON);
+}
 
+bool List::HasGreaterColor(const Node* fNode, const Node* sNode) const
+{
+	return fNode->m_Data->m_c > sNode->m_Data->m_c;
+}
+
+bool List::IsMoreRemote(const Node* fNode, const Node* sNode) const
+{
+	return (fNode->m_Data->Remoteness() - sNode->m_Data->Remoteness() > DBL_EPSILON);
 }
 
 Node* List::FindMinNode(Node* p) const // looking through the List starting from the Node <p>
@@ -105,7 +125,7 @@ Node* List::FindMinNode(Node* p) const // looking through the List starting from
 	while(p!=Tail.pPrev)
 	{
 		Node* next=p->pNext;
-		if(IsGreater(p,next))
+		if((this->*m_pf)(p,next))
 			node=next;
 		p=p->pNext;
 	}
@@ -263,7 +283,7 @@ List& List::operator=(List&& l)
 	{
 		if(l.m_size==0)
 		{
-			
+
 			Head.pNext=&Tail;
 			Tail.pPrev=&Head;
 			m_size=0;
@@ -278,11 +298,11 @@ List& List::operator=(List&& l)
 			m_size=l.m_size;
 		}
 
-			// deleting of old links
-			l.Head.pNext=&l.Tail;
-			l.Tail.pPrev=&l.Head;
-			l.m_size=0; // redundantly
-		
+		// deleting of old links
+		l.Head.pNext=&l.Tail;
+		l.Tail.pPrev=&l.Head;
+		l.m_size=0; // redundantly
+
 	}
 
 	return *this;

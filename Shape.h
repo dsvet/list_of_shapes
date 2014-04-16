@@ -14,5 +14,9 @@ public:
 	virtual bool operator==(const Shape& sh) const {return sh.m_c==m_c;}
 	virtual void Print(ostream& o) const {o<<"Colour is "<<m_c<<endl;};
 	virtual Shape& operator=(const Shape&);
+
+	virtual double Remoteness() const = 0;
+
+	friend class List;
 };
 

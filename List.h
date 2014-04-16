@@ -1,12 +1,18 @@
 #pragma once
+typedef bool (List::*PF)(const Node* fNode, const Node* sNode) const; // <PF> is a pointer to comparison function
+enum SORT_ATTR{SQUARE, COLOR, REMOTENESS};
 
 class List
 {
 	size_t m_size;
 	Node Head,Tail;
 
-	bool IsGreater(const Node* fNode, const Node* sNode) const; // compare squares of Shapes in the Nodes
+	PF m_pf; // pointer to the certain comparison function (set by SORT_ATTR parameter in SelectionSort)
+	bool HasGreaterSquare(const Node* fNode, const Node* sNode) const; // compare squares of Shapes in the Nodes
+	bool HasGreaterColor(const Node* fNode, const Node* sNode) const; // compare colors of Shapes in the Nodes
+	bool IsMoreRemote(const Node* fNode, const Node* sNode) const; // compare remoteness of Shapes in the Nodes from (0;0)
 	Node* FindMinNode(Node* cur) const; // return minimal Node in the List beginning from Node <cur> inclusively
+		
 	void Print(ostream&) const;
 	void Read(istream&);
 public:
@@ -24,7 +30,7 @@ public:
 	bool RemoveFirst(const Shape& c); // remove the first Node pointed to Shape <c>
 	size_t Remove(const Shape& c); // remove all Nodes pointed to Shape <c>; return number of removed Nodes
 	void Clear(); // clear List
-	void SortBySquare(); // sort by ascending of square
+	void SelectionSort(SORT_ATTR); // sort by ascending of square
 
 
 	friend ostream& operator<<(ostream&,const List&);

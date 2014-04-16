@@ -20,5 +20,6 @@ public:
 	virtual Shape& operator=(const Shape&);
 
 	void ChangeData(int x,int y,int w,int h,Color c);
+	virtual double Remoteness() const {return sqrt(m_x*m_x+m_y*m_y);}; // return remoteness from the initial point (0;0)
 };
 

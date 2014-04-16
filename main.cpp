@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "List.h"
+#include <list>
 #define stop __asm nop
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -48,8 +49,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	cout<<l2.Remove(r5)<<" nodes were removed."<<endl;		
 	cout<<l;
 
-	l2.SortBySquare();
+	l2.SelectionSort(COLOR);
 	ofstream fout("MyList.txt");
+	cout<<"Sorted list:\n"<<l2;
+	stop
 	fout<<l2;
 
 	List l3=std::move(List());
