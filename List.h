@@ -30,7 +30,7 @@ public:
 	bool RemoveFirst(const Shape& c); // remove the first Node pointed to Shape <c>
 	size_t Remove(const Shape& c); // remove all Nodes pointed to Shape <c>; return number of removed Nodes
 	void Clear(); // clear List
-	void SelectionSort(SORT_ATTR); // sort by ascending of square
+	void SelectionSort(SORT_ATTR); // sort by ascending of sorting attribute
 
 
 	friend ostream& operator<<(ostream&,const List&);
